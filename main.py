@@ -4,15 +4,13 @@ Created on Tue Feb 23 15:02:31 2021
 
 @author: Markus Sandberg
 """
-import kivy
 from kivy.app import App
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
-from tkinter.filedialog import askopenfilename
+import easygui
 import openpyxl
 from pandas import DataFrame
-import tkinter as tk
 
 tiedot = []
 
@@ -20,11 +18,12 @@ class MainApp(App):
 
     def build(self):
         layout = GridLayout(cols=2)
-        self.a = TextInput(text='Sarakkeita', multiline=False)
-        self.b = TextInput(text='Rivejä', multiline=False)
-        self.c = TextInput(text='Tiedostoja', multiline=False)
+        self.a = TextInput(text='Vertailtava tieto sarakkeessa', multiline=False)
+        self.aa = TextInput(text='', multiline=False)
+        self.b = TextInput(text='Turhia rivejä alussa', multiline=False)
+        self.c = TextInput(text='Vertailtavia tiedostoja', multiline=False)
         submit = Button(text='Submit', on_press=self.submit)
-        self.d = TextInput(text='Testi', multiline=True)
+        self.d = TextInput(text='', multiline=True)
         layout.add_widget(self.a)
         layout.add_widget(self.b)
         layout.add_widget(self.c)
@@ -39,9 +38,7 @@ class MainApp(App):
         v = range(v1)
 
         for i in v:
-            root = tk.Tk()  # Poistetaan tkinter aloitusikkuna
-            root.withdraw()
-            filename = askopenfilename()  # Pyydetään käyttäjää valitsemaan vertailtava tiedosto
+            filename = easygui.fileopenbox()
             wb1 = openpyxl.load_workbook(filename)  # Tehdään tiedostosta openpyxl workbook
             Sheet1 = wb1.active  # Muutetaan workbook worksheetiksi, ja poistetaan X ylintä riviä
             S = Sheet1.max_column  # Etsitään tiedoston viimeinen sarake
